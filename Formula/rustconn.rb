@@ -1,8 +1,8 @@
 class Rustconn < Formula
   desc "Manage remote connections easily - SSH, RDP, VNC, SPICE, Telnet, Serial"
   homepage "https://github.com/totoshko88/RustConn"
-  url "https://github.com/totoshko88/RustConn/archive/refs/tags/v0.18.1.tar.gz"
-  sha256 "6bd107a5c2c4c2d9b183e1437e43c21f7f7a940dfe4ef384d7545b4d693bacad"
+  url "https://github.com/totoshko88/RustConn/archive/refs/tags/v0.18.2.tar.gz"
+  sha256 "768046b5d355c724b37c62ab89d7ca05ddcbfbe11e32d2f683ddd71e64f41f3d"
   license "GPL-3.0-or-later"
   head "https://github.com/totoshko88/RustConn.git", branch: "main"
 
@@ -21,13 +21,15 @@ class Rustconn < Formula
   depends_on "vte3"
 
   def install
-    # Build GUI with macOS-specific features (no wayland, no D-Bus tray)
-    system "cargo", "install", *std_cargo_args(path: "rustconn"),
+    # Build both binaries in a single cargo invocation to avoid
+    # duplicate dependency resolution and share compilation artifacts.
+    system "cargo", "build", "--release",
+           "-p", "rustconn", "-p", "rustconn-cli",
            "--no-default-features",
-           "--features", "tray-macos,vnc-embedded,rdp-embedded,rdp-audio"
+           "--features", "rustconn/tray-macos,rustconn/vnc-embedded,rustconn/rdp-embedded,rustconn/rdp-audio"
 
-    # Build CLI
-    system "cargo", "install", *std_cargo_args(path: "rustconn-cli")
+    bin.install "target/release/rustconn"
+    bin.install "target/release/rustconn-cli"
 
     # Install locales
     Dir["po/*.po"].each do |po|
