@@ -1,8 +1,8 @@
 class Rustconn < Formula
   desc "Manage remote connections easily - SSH, RDP, VNC, SPICE, Telnet, Serial"
   homepage "https://github.com/totoshko88/RustConn"
-  url "https://github.com/totoshko88/RustConn/archive/refs/tags/v0.18.7.tar.gz"
-  sha256 "8b673a5c381b801738c087960948147afad34c7a3adb97567c32ca50b06ebb86"
+  url "https://github.com/totoshko88/RustConn/archive/refs/tags/v0.18.8.tar.gz"
+  sha256 "db034974a03c4af3e747871d31e65383b3249d4c1b68625cda525265ee0b2396"
   license "GPL-3.0-or-later"
   head "https://github.com/totoshko88/RustConn.git", branch: "main"
 
@@ -26,7 +26,7 @@ class Rustconn < Formula
     system "cargo", "build", "--release",
            "-p", "rustconn", "-p", "rustconn-cli",
            "--no-default-features",
-           "--features", "rustconn/tray-macos,rustconn/vnc-embedded,rustconn/rdp-embedded,rustconn/rdp-audio"
+           "--features", "rustconn/tray-macos,rustconn/system-keyring,rustconn/vnc-embedded,rustconn/rdp-embedded,rustconn/rdp-audio"
 
     bin.install "target/release/rustconn"
     bin.install "target/release/rustconn-cli"
