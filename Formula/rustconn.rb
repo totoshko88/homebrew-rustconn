@@ -2,7 +2,7 @@ class Rustconn < Formula
   desc "Manage remote connections easily - SSH, RDP, VNC, SPICE, Telnet, Serial"
   homepage "https://github.com/totoshko88/RustConn"
   url "https://github.com/totoshko88/RustConn/archive/refs/tags/v0.19.0.tar.gz"
-  sha256 "233cb255712159b3f77a8088cc3dbbe4500f48815c1e476b340e6e33e98a7704"
+  sha256 "53cc85c52ab0855cbe4514cd187c68c8e7a42ec8b0b510cdd306e485e8a718ab"
   license "GPL-3.0-or-later"
   head "https://github.com/totoshko88/RustConn.git", branch: "main"
 
