@@ -1,8 +1,15 @@
 class Rustconn < Formula
   desc "Manage remote connections easily - SSH, RDP, VNC, SPICE, Telnet, Serial"
   homepage "https://github.com/totoshko88/RustConn"
-  url "https://github.com/totoshko88/RustConn/archive/refs/tags/v0.19.5.tar.gz"
-  sha256 "ea2683cd671b39463577252d7a911509871c7259656a8f992750a0aa41a54e29"
+  # TEMPORARY PRE-TAG STATE. A Git tag is mutable, so this form is only valid
+  # while v0.19.6 does not exist yet and the formula cannot be published.
+  # REQUIRED before publishing to a tap: replace the two lines below with the
+  # release archive and its measured checksum, e.g.
+  #   url "https://github.com/totoshko88/RustConn/archive/refs/tags/v0.19.6.tar.gz"
+  #   sha256 "c64c8fb48a48ad8e29bf73b6dc7b5e352f4409bb327def45937751b023973f72"
+  # Alternatively pin the immutable release commit via `revision:`. Never copy a
+  # checksum from another version.
+  url "https://github.com/totoshko88/RustConn.git", tag: "v0.19.6"
   license "GPL-3.0-or-later"
   head "https://github.com/totoshko88/RustConn.git", branch: "main"
 
@@ -26,7 +33,7 @@ class Rustconn < Formula
     system "cargo", "build", "--release",
            "-p", "rustconn", "-p", "rustconn-cli",
            "--no-default-features",
-           "--features", "rustconn/tray-macos,rustconn/system-keyring,rustconn/vnc-embedded,rustconn/rdp-embedded,rustconn/rdp-audio"
+           "--features", "rustconn/tray-macos,rustconn/system-keyring,rustconn/vnc-embedded,rustconn/rdp-embedded,rustconn/gfx-h264,rustconn/rdp-audio,rustconn/rd-gateway,rustconn/adw-1-8"
 
     bin.install "target/release/rustconn"
     bin.install "target/release/rustconn-cli"
