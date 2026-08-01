@@ -1,15 +1,14 @@
 class Rustconn < Formula
   desc "Manage remote connections easily - SSH, RDP, VNC, SPICE, Telnet, Serial"
   homepage "https://github.com/totoshko88/RustConn"
-  # TEMPORARY PRE-TAG STATE. A Git tag is mutable, so this form is only valid
-  # while v0.19.6 does not exist yet and the formula cannot be published.
-  # REQUIRED before publishing to a tap: replace the two lines below with the
-  # release archive and its measured checksum, e.g.
-  #   url "https://github.com/totoshko88/RustConn/archive/refs/tags/v0.19.10.tar.gz"
-  #   sha256 "1b2e21293bffd9a300d544644fffe027e02c51d05c3d910982b192fc734c61d8"
-  # Alternatively pin the immutable release commit via `revision:`. Never copy a
-  # checksum from another version.
-  url "https://github.com/totoshko88/RustConn.git", tag: "v0.19.6"
+  # This is the canonical formula; the release workflow copies it into the tap
+  # and rewrites the two lines below with the release tag and the measured
+  # checksum of that tarball. Keep them as a single active `url` and a single
+  # active `sha256` at this indentation — the sed patterns and the CI
+  # verification gate are anchored to `^  url` and `^  sha256` (issue #251).
+  # PLACEHOLDER_SHA256 is expected here in-tree; only the tap copy has a hash.
+  url "https://github.com/totoshko88/RustConn/archive/refs/tags/v0.19.11.tar.gz"
+  sha256 "e634a8a705a3c73eab058985dada1ea05862f41da2557ffe52d946729b33e2ce"
   license "GPL-3.0-or-later"
   head "https://github.com/totoshko88/RustConn.git", branch: "main"
 
