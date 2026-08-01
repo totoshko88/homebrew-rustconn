@@ -5,8 +5,8 @@ class Rustconn < Formula
   # while v0.19.6 does not exist yet and the formula cannot be published.
   # REQUIRED before publishing to a tap: replace the two lines below with the
   # release archive and its measured checksum, e.g.
-  #   url "https://github.com/totoshko88/RustConn/archive/refs/tags/v0.19.9.tar.gz"
-  #   sha256 "4d84d597aead2e3ff616f91cb7024cf4554aed81d2a6d6f7dd47e74f70b22b90"
+  #   url "https://github.com/totoshko88/RustConn/archive/refs/tags/v0.19.10.tar.gz"
+  #   sha256 "1b2e21293bffd9a300d544644fffe027e02c51d05c3d910982b192fc734c61d8"
   # Alternatively pin the immutable release commit via `revision:`. Never copy a
   # checksum from another version.
   url "https://github.com/totoshko88/RustConn.git", tag: "v0.19.6"
