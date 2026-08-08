@@ -8,7 +8,7 @@ class Rustconn < Formula
   # verification gate are anchored to `^  url` and `^  sha256` (issue #251).
   # PLACEHOLDER_SHA256 is expected here in-tree; only the tap copy has a hash.
   url "https://github.com/totoshko88/RustConn/archive/refs/tags/v0.19.17.tar.gz"
-  sha256 "8e1c6a7cf6c935a140eb7d909e97078348d5e2e4014077d54c8fa471147a6653"
+  sha256 "81c97edc524a2f02c290498e6d68bd0553f3cb20606bd96ffc57f4fe6335d300"
   license "GPL-3.0-or-later"
   head "https://github.com/totoshko88/RustConn.git", branch: "main"
 
