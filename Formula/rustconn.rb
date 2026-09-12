@@ -7,8 +7,8 @@ class Rustconn < Formula
   # active `sha256` at this indentation — the sed patterns and the CI
   # verification gate are anchored to `^  url` and `^  sha256` (issue #251).
   # PLACEHOLDER_SHA256 is expected here in-tree; only the tap copy has a hash.
-  url "https://github.com/totoshko88/RustConn/archive/refs/tags/v0.21.11.tar.gz"
-  sha256 "0de42cafc0f16d9458f4bacd3c6dfe71329e7e8bcef7e585365c3038a4eabefc"
+  url "https://github.com/totoshko88/RustConn/archive/refs/tags/v0.21.12.tar.gz"
+  sha256 "18e187fd821475dbeb6cd370a88d7fbfdf6c649c0aa71560d9c2033b671a7a94"
   license "GPL-3.0-or-later"
   head "https://github.com/totoshko88/RustConn.git", branch: "main"
 
@@ -67,8 +67,8 @@ class Rustconn < Formula
     ]
 
     {
-      "libadwaita-1" => { "1.8" => "adw-1-8", "1.7" => "adw-1-7", "1.6" => "adw-1-6" },
-      "gtk4" => { "4.22" => "gtk-4-22", "4.20" => "gtk-4-20", "4.18" => "gtk-4-18" },
+      "libadwaita-1"  => { "1.8" => "adw-1-8", "1.7" => "adw-1-7", "1.6" => "adw-1-6" },
+      "gtk4"          => { "4.22" => "gtk-4-22", "4.20" => "gtk-4-20", "4.18" => "gtk-4-18" },
       "vte-2.91-gtk4" => { "0.78" => "vte-0-78" },
     }.each do |pc_name, ladder|
       rung = ladder.find { |minimum, _| quiet_system("pkg-config", "--atleast-version=#{minimum}", pc_name) }
@@ -101,6 +101,20 @@ class Rustconn < Formula
 
     # Build both binaries in a single cargo invocation to avoid
     # duplicate dependency resolution and share compilation artifacts.
+    #
+    # `FormulaAudit/Text` asks for `"cargo", "install", *std_cargo_args` here and
+    # this formula cannot comply. `std_cargo_args` expands to
+    # `--locked --root <prefix> --path .`: the default feature set of one crate,
+    # installed straight into the keg. RustConn needs the opposite of all three —
+    # `--no-default-features` plus the feature list computed above from the
+    # installed GNOME versions, two workspace members from one invocation, and the
+    # binaries left in `target/release` because the steps below assemble them into
+    # a `.app` bundle instead of only dropping them in `bin`.
+    #
+    # The waiver lives in the CI step (`--except-cops`) rather than in a
+    # `rubocop:disable` comment here, because Homebrew enables
+    # `Style/DisableCopsWithinSourceCodeDirective` for anything under a `Formula/`
+    # path — a directive would itself be an offence.
     system "cargo", "build", "--release",
            "-p", "rustconn", "-p", "rustconn-cli",
            "--no-default-features",
@@ -158,16 +172,19 @@ class Rustconn < Formula
     cp_r "#{share}/locale", "#{app_dir}/Resources/locale"
 
     # Icon. Delegated to scripts/make-iconset.sh, the same script the canonical
-    # producer uses, so the render-and-package logic cannot drift between the two.
+    # producer uses, so the icon step cannot drift between the two.
     #
-    # The previous inline version rendered each size through `system
-    # rsvg-convert` with no check that a well-formed PNG came back, then packaged
-    # with `iconutil`. In the build sandbox that surfaced as an opaque
-    # "Invalid Iconset" from iconutil whenever a render came back empty or the
-    # wrong size, with nothing in the log to say which member was bad. The shared
-    # script renders directly into the canonical Apple names, verifies every PNG
-    # with `sips` before packaging, and fails naming the offending file — turning
-    # an intermittent, undiagnosable packaging failure into a clear one.
+    # On this path the script does not render anything: it copies the committed
+    # packaging/macos/RustConn.icns, because macOS 27's iconutil rejects valid
+    # iconsets with "Invalid Iconset" and broke this build even with every member
+    # PNG present and passing `sips` (#323). The rendering path is still there for
+    # FORCE_ICONUTIL=1, which is a development action after an icon change; a CI
+    # job asserts the committed .icns was built from the committed SVG.
+    #
+    # librsvg above is therefore a build dependency of that fallback only. It stays
+    # declared so `FORCE_ICONUTIL=1 brew install --build-from-source` still works,
+    # and because a formula that quietly needs a tool it does not declare is worse
+    # than one build dependency too many.
     system "bash", "scripts/make-iconset.sh",
            "rustconn/assets/icons/hicolor/scalable/apps/io.github.totoshko88.RustConn.svg",
            "#{app_dir}/Resources/RustConn.icns"
@@ -246,7 +263,7 @@ class Rustconn < Formula
     if File.executable?(lsregister)
       begin
         system lsregister, "-f", "#{prefix}/RustConn.app"
-      rescue StandardError => e
+      rescue => e
         opoo "Could not register RustConn.app with LaunchServices: #{e.message}"
       end
     end
@@ -259,13 +276,13 @@ class Rustconn < Formula
     begin
       system "#{Formula["glib"].opt_bin}/glib-compile-schemas",
              "#{HOMEBREW_PREFIX}/share/glib-2.0/schemas"
-    rescue StandardError => e
+    rescue => e
       opoo "Could not compile GSettings schemas: #{e.message}"
     end
     begin
       system "#{Formula["gtk4"].opt_bin}/gtk4-update-icon-cache", "-f", "-t",
              "#{HOMEBREW_PREFIX}/share/icons/hicolor"
-    rescue StandardError => e
+    rescue => e
       opoo "Could not update the icon cache: #{e.message}"
     end
   end
