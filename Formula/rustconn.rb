@@ -7,8 +7,8 @@ class Rustconn < Formula
   # active `sha256` at this indentation — the sed patterns and the CI
   # verification gate are anchored to `^  url` and `^  sha256` (issue #251).
   # PLACEHOLDER_SHA256 is expected here in-tree; only the tap copy has a hash.
-  url "https://github.com/totoshko88/RustConn/archive/refs/tags/v0.23.16.tar.gz"
-  sha256 "f8a987195f3450a3b97d62515ea99f799dd31024601923a8edd3a2cb3ccdaa2b"
+  url "https://github.com/totoshko88/RustConn/archive/refs/tags/v0.23.17.tar.gz"
+  sha256 "c877e6f674f9e1dc7174679bb4a7c1839d751438867b3a2a9f95b87e81bb3378"
   license "GPL-3.0-or-later"
   head "https://github.com/totoshko88/RustConn.git", branch: "main"
 
@@ -251,7 +251,7 @@ class Rustconn < Formula
     chmod 0755, bin/"rustconn-app"
   end
 
-  def post_install
+  def post_install_steps
     # Register .app bundle with LaunchServices so macOS recognises the bundle
     # identity for Dock pinning, file associations and the Cmd-Tab switcher.
     #
