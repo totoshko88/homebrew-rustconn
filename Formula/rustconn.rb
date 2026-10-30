@@ -7,8 +7,8 @@ class Rustconn < Formula
   # active `sha256` at this indentation — the sed patterns and the CI
   # verification gate are anchored to `^  url` and `^  sha256` (issue #251).
   # PLACEHOLDER_SHA256 is expected here in-tree; only the tap copy has a hash.
-  url "https://github.com/totoshko88/RustConn/archive/refs/tags/v0.24.1.tar.gz"
-  sha256 "166e8be1bfa56c8a12cd1554cfecb8b48571701ae1e2e74256a7091fef5b5f97"
+  url "https://github.com/totoshko88/RustConn/archive/refs/tags/v0.24.2.tar.gz"
+  sha256 "d708b6a1f5a7a028899b10aa3540f963074e590f38ae3081c7c53338a02b1e76"
   license "GPL-3.0-or-later"
   head "https://github.com/totoshko88/RustConn.git", branch: "main"
 
